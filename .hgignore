@@ -1,0 +1,21 @@
+syntax: glob
+
+.DS_Store
+*~
+*.lx32fsl
+*.lx64fsl
+*.dx32fsl
+*.dx64fsl
+*.d64fsl
+*.cfsl
+*.dfsl
+*.pfsl
+*.orig
+*.o
+*.so
+*.a
+*.lai
+*.la
+*.lo
+*.slo
+*/rsrc
