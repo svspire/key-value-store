@@ -75,12 +75,13 @@
 ;;;     because hashtables are always destructively modified. Allowing consistent use of prepended
 ;;;     setf was part of what I meant above by making composition easier; without this semantics,
 ;;;     changing a key/value store from an alist to a hashtable would have required code changes wherever
-;;;    the store was modified.
+;;;     the store was modified.
 
 ;;;   Note 2: For alist stores, we try not to cons up a new list in #'relate when we can avoid it. IOW, if the
-;;;    (key . value) pair in question is already present when #'relate is called, we don't cons up a new list.
-;;;    But in #'relate-unique, we don't check for an existing value, so we sometimes cons and we sometimes
-;;;    destructively modify the list.
+;;;     (key . value) pair in question is already present when #'relate is called, we don't cons up a new list.
+;;;     Likewise, if value is a member of the cdr of (key value1 value2 ...) in the alist, we don't cons.
+;;;     But in #'relate-unique, we don't check for an existing value, so we sometimes cons and we sometimes
+;;;     destructively modify the list.
 
 
 (in-package :kvs)
@@ -89,13 +90,11 @@
   (:documentation "Create a key/value association in store.
     If key already exists in store, this adds a new association
     but doesn't remove the old association(s) for that key.
-    Returns [possibly modified] store. Second value returned is true
-    if store was actually modified.
+    Returns [possibly modified] store. Second value returned is true if store was actually modified.
     In some stores (like alists) you can specify a test for matching the given key.
     In other stores (like hashtables), test is ignored because it's a property of the data structure itself.
-    IMPORTANT NOTE: This conses a new list if necessary if the store is an alist. In that case,
-    it's important to do (setf alist (relate alist key value)), because it doesn't destructively
-    modify alists."))
+    IMPORTANT NOTE: It's important to do (setf alist (relate alist key value)), because while it may destructively
+    modify alists, there are no guarantees."))
 
 (defgeneric relate-unique (store key value &key test)
   (:documentation "Create a key/value association in store.
@@ -109,7 +108,7 @@
    In some stores (like alists) you can specify a test for matching the given key.
    In other stores (like hashtables), test is ignored because it's a property of the data structure itself.
    Returns 2 values: New store and new total.")
-  (:method :around (store key amount &key test)
+  (:method :before (store key amount &key test)
     (declare (ignore store key test))
     (check-type amount number)))
 
@@ -133,7 +132,7 @@
 
 (defmethod relate ((store hash-table) key value &key (test #'equal))
   ; test here is used only to verify whether value is a member of existing set of values.
-  ; key-matching test is a property of the store
+  ; key-matching test is a property of the store itself
   (let ((oldvalue (gethash key store)))
     (cond ((listp oldvalue) ; lists are the only collections for multiple values at the moment
            (if (member value oldvalue :test test)
@@ -148,18 +147,30 @@
                  (setf (gethash key store) (list value oldvalue))
                  (values store t)))))))
 
+;;; There are two ways to store multiple values for a given key in an alist: The wrong way and the right way.
+;;; We use the right way.
+;;; WRONG: (( key1 . value1) (key1 . value2) (key2 . value3) ...)
+;;; RIGHT: (( key1 value1 value2 ...) (key2 . value3) ...)
 (defmethod relate ((store list) key value &key (test #'equal))
-  ;; If the (key . value) pair in question is already present, we won't cons up a new list."
-  ;; Caveats: 1. Using same test for both key and value might not always be what you want, but that's how it works here.
-  ;;          2. Using this function for alists can be expensive because an exhaustive search is sometimes necessary.
-  ;;             Use relate-unique on alists for better efficiency, and when you don't want duplicate keys.
-  (if
-   (find-if (lambda (pair) ; can't use assoc because we have to check both key and value.
-              (and (funcall test key (car pair))
-                   (funcall test value (cdr pair))))
-            store)
-   (values store nil)
-   (values (acons key value store) t)))
+  ;; If the (key . value) pair in question is already present, we won't cons up a new list.
+  ;; If value is a member of the values in a sublist (key value1 value2 ...), we won't cons up a new list.
+  ;; Otherwise, we will reuse structure.
+  ;; In all cases, it's a good idea to use (setf store (relate store key value))
+  ;; Caveat: Using same test for both key and value might not always be what you want, but that's how it works here.
+  (let ((pair (assoc key store :test test)))
+    (cond (pair
+           (if (listp (cdr pair))
+               (if (member value (cdr pair) :test test)
+                   (values store nil)
+                   (progn
+                     (setf (cdr pair) (cons value (cdr pair)))
+                     (values store t)))
+               (if (funcall test value (cdr pair)) ; cdr is not a list, but it matches value
+                   (values store nil)
+                   (progn
+                     (setf (cdr pair) (list value (cdr pair)))
+                     (values store t)))))
+          (t (values (acons key value store) t)))))
 
 (defmethod relate-unique ((store hash-table) key value &key test)
   (declare (ignore test)) ; test is solely a property of the store
@@ -176,15 +187,19 @@
 
 (defmethod tally ((store hash-table) key amount &key test)
   (declare (ignore test)) ; test is solely a property of the store
-  (values store
-          (if (gethash key store)
-              (incf (gethash key store) amount)
-              (setf (gethash key store) amount))))
+  (let ((oldvalue (gethash key store)))
+    (values store
+            (if oldvalue
+                (progn
+                  (check-type oldvalue number)
+                  (incf (gethash key store) amount))
+                (setf (gethash key store) amount)))))
 
 (defmethod tally ((store list) key amount &key (test #'equal))
   "Increments the key . value pair in alist indicated by key, by the indicated amount.
   If such a pair doesn't exist, create it."
   (let ((pair (assoc key store :test test)))
+    (check-type (cdr pair) number)
     (cond (pair (values store (incf (cdr pair) amount)))
           (t (values (acons key amount store)
                      amount)))))
