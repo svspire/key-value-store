@@ -76,6 +76,10 @@
 ;;;     setf was part of what I meant above by making composition easier; without this semantics,
 ;;;     changing a key/value store from an alist to a hashtable would have required code changes wherever
 ;;;     the store was modified.
+;;;     The macros relate!, relate-unique!, remove-key!, tally!, and clear-store! are the macro versions
+;;;     of the respective functions. Using them automatically prepends (setf store ...) in front of
+;;;     their respective functions. Naturally to use these macros the store argument must be something
+;;;     setf-able (i.e. not a literal alist, for example).
 
 ;;;   Note 2: For alist stores, we try not to cons up a new list in #'relate when we can avoid it. IOW, if the
 ;;;     (key . value) pair in question is already present when #'relate is called, we don't cons up a new list.
@@ -85,6 +89,43 @@
 
 
 (in-package :kvs)
+
+(defmacro relate! (store key value &rest args)
+  "Macro version of relate. Automatically adds (setf store ...) in front
+   of the call, and returns both values thereof properly."
+  (let ((storevar (gensym))
+        (modifiedvar (gensym)))
+    `(multiple-value-bind (,storevar ,modifiedvar) (relate ,store ,key ,value ,@args)
+       (values (setf ,store ,storevar)
+               ,modifiedvar))))
+
+(defmacro relate-unique! (store key value &rest args)
+  "Macro version of relate-unique. Automatically adds (setf store ...) in front
+   of the relate call."
+  `(setf ,store (relate-unique ,store ,key ,value ,@args)))
+
+(defmacro remove-key! (store key &rest args)
+  "Macro version of remove-key. Automatically adds (setf store ...) in front
+  of the call, and returns both values thereof properly."
+  (let ((storevar (gensym))
+        (modifiedvar (gensym)))
+    `(multiple-value-bind (,storevar ,modifiedvar) (remove-key ,store ,key ,@args)
+       (values (setf ,store ,storevar)
+               ,modifiedvar))))
+
+(defmacro tally! (store key amount &rest args)
+  "Macro version of tally. Automatically adds (setf store ...) in front
+  of the call, and returns both values thereof properly."
+  (let ((storevar (gensym))
+        (newcountvar (gensym)))
+    `(multiple-value-bind (,storevar ,newcountvar) (tally ,store ,key ,amount ,@args)
+       (values (setf ,store ,storevar)
+               ,newcountvar))))
+
+(defmacro clear-store! (store)
+  "Macro version of clear-store. Automatically adds (setf store ...) in front
+  of the call."
+  `(setf ,store (clear-store ,store)))
 
 (defgeneric make-store (style &rest other-args)
   (:documentation "Returns a store of the given style, where style is one
@@ -109,7 +150,7 @@
 (defgeneric tally (store key amount &key test)
   (:documentation
    "Increments the value in the key/value pair in the given data-structure by the indicated amount.
-   (Implies only one value is associated with key in store.)
+   [Expects only one value is associated with key in store.]
    In some stores (like alists) you can specify a test for matching the given key.
    In other stores (like hashtables), test is ignored because it's a property of the data structure itself.
    Returns 2 values: New store and new total.")
@@ -121,6 +162,7 @@
   (:documentation "Returns value(s) associated with key in store, if any, or
    default if none. If multiple values are associated with key, they
    are returned as a collection of some kind, not as multiple values.
+   Returns second value of present-p, which is true if key was actually present in store.
    In some stores (like alists) you can specify a test for matching the given key.
    In other stores (like hashtables), test is ignored because it's a property of the data structure itself."))
 
@@ -138,19 +180,23 @@
 (defmethod relate ((store hash-table) key value &key (test #'equal))
   ; test here is used only to verify whether value is a member of existing set of values.
   ; key-matching test is a property of the store itself
-  (let ((oldvalue (gethash key store)))
-    (cond ((listp oldvalue) ; lists are the only collections for multiple values at the moment
-           (if (member value oldvalue :test test)
-               (values store nil)
-               (progn
-                 (setf (gethash key store) (cons value oldvalue))
-                 (values store t))))
-          (t
-           (if (funcall test value oldvalue)
-               (values store nil)
-               (progn
-                 (setf (gethash key store) (list value oldvalue))
-                 (values store t)))))))
+  (multiple-value-bind (oldvalue present-p) (gethash key store)
+    (cond (present-p
+           (cond ((listp oldvalue) ; lists are the only collections for multiple values at the moment
+                  (if (member value oldvalue :test test)
+                      (values store nil)
+                      (progn
+                        (setf (gethash key store) (cons value oldvalue))
+                        (values store t))))
+                 (t
+                  (if (funcall test value oldvalue)
+                      (values store nil)
+                      (progn
+                        (setf (gethash key store) (list value oldvalue))
+                        (values store t))))))
+          (t ; not currently present
+           (setf (gethash key store) value)
+           (values store t)))))
 
 ;;; There are two ways to store multiple values for a given key in an alist: The wrong way and the right way.
 ;;; We use the right way.
@@ -192,6 +238,9 @@
 
 (defmethod tally ((store hash-table) key amount &key test)
   (declare (ignore test)) ; test is solely a property of the store
+  "Increments the key . value pair in hashtable indicated by key, by the indicated amount.
+  If such a pair doesn't exist, create it."
+  (check-type amount number)
   (let ((oldvalue (gethash key store)))
     (values store
             (if oldvalue
@@ -214,7 +263,11 @@
   (gethash key store default))
 
 (defmethod lookup-key ((store list) key &key (test #'equal) (default nil))
-  (or (cdr (assoc key store :test test)) default))
+  (let ((present-p (assoc key store :test test)))
+    (values (if present-p
+                (cdr present-p)
+                default)
+            present-p)))
 
 (defmethod remove-key ((store hash-table) key &key test)
   (declare (ignore test)) ; test is solely a property of the store
@@ -236,3 +289,10 @@
 
 (defmethod make-store ((style (eql :hashtable)) &rest other-args)
   (apply 'make-hash-table other-args))
+
+(defmethod clear-store ((store hash-table))
+  (clrhash store))
+
+(defmethod clear-store ((store list))
+  nil)
+
