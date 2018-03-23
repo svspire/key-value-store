@@ -86,6 +86,11 @@
 
 (in-package :kvs)
 
+(defgeneric make-store (style &rest other-args)
+  (:documentation "Returns a store of the given style, where style is one
+    of :ALIST or :HASHTABLE or any other style with a method defined.
+    It's not essential that you use this, it's just for convenience and consistency."))
+
 (defgeneric relate (store key value &key test)
   (:documentation "Create a key/value association in store.
     If key already exists in store, this adds a new association
@@ -224,3 +229,10 @@
     (if was-present? ; remove-if is not guaranteed to return an eq list if it did nothing
         (values newstore was-present?)
         (values store was-present?))))
+
+(defmethod make-store ((style (eql :alist)) &rest other-args)
+  (declare (ignore other-args))
+  '())
+
+(defmethod make-store ((style (eql :hashtable)) &rest other-args)
+  (apply 'make-hash-table other-args))
