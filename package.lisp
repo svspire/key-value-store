@@ -42,4 +42,5 @@
    #:tally
    #:lookup-key
    #:remove-key
-   #:clear-store))
+   #:clear-store
+   #:make-store))
