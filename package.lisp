@@ -37,6 +37,11 @@
   (:nicknames :kvs)
   (:use :cl)
   (:export
+   #:relate!
+   #:relate-unique!
+   #:remove-key!
+   #:tally!
+   #:clear-store!
    #:relate
    #:relate-unique
    #:tally

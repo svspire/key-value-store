@@ -27,10 +27,9 @@
     (setf pairs (remove-key pairs 'foo))
     (assert-equal '((foo . boo)) (set-difference *test-pairs* pairs))))
 
-;(run-tests '(alist-pair-retrieval))
+; (run-tests '(alist-pair-retrieval))
 
 ; Copy *test-pairs* into a hashtable and test from there
-
 (define-test hashtable-pair-retrieval
              "Copy *test-pairs* into a hashtable and test again"
   (let ((pairs (inithash)))
@@ -43,14 +42,81 @@
 
 ; (run-tests '(hashtable-pair-retrieval))
 
+(defun test-relate-unique (table)
+  ; non-present key
+  (multiple-value-bind (value present-p) (lookup-key table 'foo)
+    (assert-nil value)
+    (assert-nil present-p))
+  ; present key, non-nil value
+  (kvs::relate-unique! table 'foo 'baz)
+  (multiple-value-bind (value present-p) (lookup-key table 'foo)
+    (assert-eq 'baz value)
+    (assert-true present-p))
+  ; present key but nil value
+  (kvs::relate-unique! table 'goo nil)
+  (multiple-value-bind (value present-p) (lookup-key table 'goo)
+    (assert-eq nil value)
+    (assert-true present-p))
+  ; change to non-nil value
+  (kvs::relate-unique! table 'goo 'gaz)
+  (multiple-value-bind (value present-p) (lookup-key table 'goo)
+    (assert-eq 'gaz value)
+    (assert-true present-p))
+  )
+
+(defun test-relate (table)
+  ; non-present key
+  (multiple-value-bind (value present-p) (lookup-key table 'foo)
+    (assert-nil value)
+    (assert-nil present-p))
+  ; present key, non-nil value
+  (kvs::relate! table 'foo 'baz)
+  (multiple-value-bind (value present-p) (lookup-key table 'foo)
+    (assert-eq 'baz value)
+    (assert-true present-p))
+  ; present key but nil value
+  (kvs::relate! table 'goo nil)
+  (multiple-value-bind (value present-p) (lookup-key table 'goo)
+    (assert-eq nil value)
+    (assert-true present-p))
+  ; add non-nil value
+  (kvs::relate! table 'goo 'gaz)
+  (multiple-value-bind (value present-p) (lookup-key table 'goo)
+    (assert-equal '(gaz) value)
+    (assert-true present-p))
+  ; add one more non-nil value
+  (kvs::relate! table 'goo 'gar)
+  (multiple-value-bind (value present-p) (lookup-key table 'goo)
+    (assert-true (unordered-equal '(gaz gar) value))
+    (assert-true present-p))
+  )
+
 (define-test alist-relate-unique
-             )
+             "Test relate-unique for an alist"
+             (let ((table (make-store :alist)))
+               (test-relate-unique table)))
+
+; (run-tests '(alist-relate-unique))
 
 (define-test hashtable-relate-unique
-             )
+             "Test relate-unique for a hashtable"
+             (let ((table (make-store :hashtable :test #'equal)))
+               (test-relate-unique table)))
+
+; (run-tests '(hashtable-relate-unique))
 
 (define-test alist-relate
-             )
+             "Test relate for an alist"
+  (let ((table (make-store :alist)))
+    (test-relate table)))
+
+; (run-tests '(alist-relate))
 
 (define-test hashtable-relate
-             )
+             "Test relate for a hashtable"
+             (let ((table (make-hash-table)))
+               (test-relate table)))
+
+; (run-tests '(hashtable-relate))
+
+
