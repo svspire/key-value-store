@@ -253,8 +253,9 @@
   "Increments the key . value pair in alist indicated by key, by the indicated amount.
   If such a pair doesn't exist, create it."
   (let ((pair (assoc key store :test test)))
-    (check-type (cdr pair) number)
-    (cond (pair (values store (incf (cdr pair) amount)))
+    (cond (pair
+           (check-type (cdr pair) number)
+           (values store (incf (cdr pair) amount)))
           (t (values (acons key amount store)
                      amount)))))
 
