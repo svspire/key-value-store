@@ -1,7 +1,7 @@
 ;;; -*- Mode: LISP; Syntax: COMMON-LISP -*-
 
-(defsystem "kvs-test"
-  :version "0.0.1"
+(defsystem "kvs-tests"
+  :version "0.0.2"
   :description "Key-Value-Store Tests"
   :author "Copyright (c) 2018 Shannon Spires <ssos@bearlanding.com>"
   :license "BSD 3-clause"
