@@ -1,7 +1,7 @@
 # key-value-store
 Defines a generic API for Common Lisp key/value stores.
 
-See included documentation file [key-value-store.html](http://htmlpreview.github.com/?https://github.com/svspire/key-value-store/blob/master/key-value-store.html).
+See included documentation file [key-value-store.html](http://htmlpreview.github.io/?https://github.com/svspire/key-value-store/blob/master/key-value-store.html).
 
 The purpose of this library is to create a key/value store mechanism with consistent call and return semantics regardless of how the underlying store is implemented, which Common Lisp does not natively provide. By using the functions herein it's easy to change a key/value store from one storage mechanism to another with only one line of code. The built-in methods support alists and hashtables, but others can be added by adding specialized methods.
 
