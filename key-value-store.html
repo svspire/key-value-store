@@ -1,86 +1,98 @@
-<h2>Documentation for package :KEY-VALUE-STORE</h2>
+<!DOCTYPE html>
+  <html>
+  <head>
+  <style>
+   pre {
+   white-space: pre-wrap;
+   padding: 0; /* So pre sections won't have too much space around them */
+   margin: 0;
+   }
+  </style>
+  </head>
+  <body>
+  <div style="margin: auto; width:95%;"><h2>Documentation for package :KEY-VALUE-STORE</h2>
 <i>This documentation was created by <a href=https://github.com/svspire/cl-simpledoc>cl-simpledoc</a></i>
 <p>
 <h3 style="color:green;">External Symbols</h3>
 
 <TABLE CELLPADDING=3 WIDTH="100%">
 <TR>
-<TD ALIGN=LEFT><B><code><font size=+1>clear-store! </font></B>(store)</code></TD>
+<TD ALIGN=LEFT><B><code><font size=+1>clear-store! </font>(store)</code></B></TD>
 <TD ALIGN=RIGHT><I>[Macro]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>Macro version of clear-store. Automatically adds (setf store ...) in front
-  of the call.</TD>
+<TD COLSPAN=2><div style='white-space: normal;'>Macro version of clear-store. Automatically adds (setf store ...) in front
+  of the call.</div></TD>
 </TR>
 </TABLE>
 <BR/>
 
 <TABLE CELLPADDING=3 WIDTH="100%">
 <TR>
-<TD ALIGN=LEFT><B><code><font size=+1>relate! </font></B>(store key value &amp;rest args)</code></TD>
+<TD ALIGN=LEFT><B><code><font size=+1>relate! </font>(store key value &amp;rest args)</code></B></TD>
 <TD ALIGN=RIGHT><I>[Macro]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>Macro version of relate. Automatically adds (setf store ...) in front
-   of the call, and returns both values thereof properly.</TD>
+<TD COLSPAN=2><div style='white-space: normal;'>Macro version of relate. Automatically adds (setf store ...) in front
+   of the call, and returns both values thereof properly.</div></TD>
 </TR>
 </TABLE>
 <BR/>
 
 <TABLE CELLPADDING=3 WIDTH="100%">
 <TR>
-<TD ALIGN=LEFT><B><code><font size=+1>relate-unique! </font></B>(store key value &amp;rest args)</code></TD>
+<TD ALIGN=LEFT><B><code><font size=+1>relate-unique! </font>(store key value &amp;rest args)</code></B></TD>
 <TD ALIGN=RIGHT><I>[Macro]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>Macro version of relate-unique. Automatically adds (setf store ...) in front
-   of the relate call.</TD>
+<TD COLSPAN=2><div style='white-space: normal;'>Macro version of relate-unique. Automatically adds (setf store ...) in front
+   of the relate call.</div></TD>
 </TR>
 </TABLE>
 <BR/>
 
 <TABLE CELLPADDING=3 WIDTH="100%">
 <TR>
-<TD ALIGN=LEFT><B><code><font size=+1>remove-key! </font></B>(store key &amp;rest args)</code></TD>
+<TD ALIGN=LEFT><B><code><font size=+1>remove-key! </font>(store key &amp;rest args)</code></B></TD>
 <TD ALIGN=RIGHT><I>[Macro]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>Macro version of remove-key. Automatically adds (setf store ...) in front
-  of the call, and returns both values thereof properly.</TD>
+<TD COLSPAN=2><div style='white-space: normal;'>Macro version of remove-key. Automatically adds (setf store ...) in front
+  of the call, and returns both values thereof properly.</div></TD>
 </TR>
 </TABLE>
 <BR/>
 
 <TABLE CELLPADDING=3 WIDTH="100%">
 <TR>
-<TD ALIGN=LEFT><B><code><font size=+1>tally! </font></B>(store key amount &amp;rest args)</code></TD>
+<TD ALIGN=LEFT><B><code><font size=+1>tally! </font>(store key amount &amp;rest args)</code></B></TD>
 <TD ALIGN=RIGHT><I>[Macro]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>Macro version of tally. Automatically adds (setf store ...) in front
-  of the call, and returns both values thereof properly.</TD>
+<TD COLSPAN=2><div style='white-space: normal;'>Macro version of tally. Automatically adds (setf store ...) in front
+  of the call, and returns both values thereof properly.</div></TD>
 </TR>
 </TABLE>
 <BR/>
 
 <TABLE CELLPADDING=3 WIDTH="100%">
 <TR>
-<TD ALIGN=LEFT><B><code><font size=+1>clear-store </font></B>(store)</code></TD>
+<TD ALIGN=LEFT><B><code><font size=+1>clear-store </font>(store)</code></B></TD>
 <TD ALIGN=RIGHT><I>[Generic function]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>Removes all associations from store and returns
-    empty store.</TD>
+<TD COLSPAN=2><div style='white-space: normal;'>Removes all associations from store and returns
+    empty store.</div></TD>
 </TR><TR><TD COLSPAN=2 ALIGN=RIGHT>
 <TABLE CELLPADDING=3 WIDTH="95%">
 <TR>
-<TD ALIGN=LEFT><B><CODE>clear-store </B>((&amp;method list) next-method-context store)</code></TD>
+<TD ALIGN=LEFT><B><CODE>clear-store ((store list))</code></B></TD>
 <TD ALIGN=RIGHT><I>[method]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>[No documentation found]</TD>
+<TD COLSPAN=2><i>[No documentation found]</i></TD>
 </TR>
 </TABLE>
 
 <TABLE CELLPADDING=3 WIDTH="95%">
 <TR>
-<TD ALIGN=LEFT><B><CODE>clear-store </B>((&amp;method hash-table) next-method-context store)</code></TD>
+<TD ALIGN=LEFT><B><CODE>clear-store ((store hash-table))</code></B></TD>
 <TD ALIGN=RIGHT><I>[method]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>[No documentation found]</TD>
+<TD COLSPAN=2><i>[No documentation found]</i></TD>
 </TR>
 </TABLE>
 </TD></TR>
@@ -89,31 +101,31 @@
 
 <TABLE CELLPADDING=3 WIDTH="100%">
 <TR>
-<TD ALIGN=LEFT><B><code><font size=+1>lookup-key </font></B>(store key &amp;key test default)</code></TD>
+<TD ALIGN=LEFT><B><code><font size=+1>lookup-key </font>(store key &amp;key test default)</code></B></TD>
 <TD ALIGN=RIGHT><I>[Generic function]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>Returns value(s) associated with key in store, if any, or
+<TD COLSPAN=2><div style='white-space: normal;'>Returns value(s) associated with key in store, if any, or
    default if none. If multiple values are associated with key, they
    are returned as a collection of some kind, not as multiple values.
    Returns second value of present-p, which is true if key was actually present in store.
    In some stores (like alists) you can specify a test for matching the given key.
-   In other stores (like hashtables), test is ignored because it's a property of the data structure itself.</TD>
+   In other stores (like hashtables), test is ignored because it's a property of the data structure itself.</div></TD>
 </TR><TR><TD COLSPAN=2 ALIGN=RIGHT>
 <TABLE CELLPADDING=3 WIDTH="95%">
 <TR>
-<TD ALIGN=LEFT><B><CODE>lookup-key </B>((&amp;method list) next-method-context store key &amp;key (test #'equal) (default nil))</code></TD>
+<TD ALIGN=LEFT><B><CODE>lookup-key ((store list) key &amp;key (test #'equal) (default nil))</code></B></TD>
 <TD ALIGN=RIGHT><I>[method]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>[No documentation found]</TD>
+<TD COLSPAN=2><i>[No documentation found]</i></TD>
 </TR>
 </TABLE>
 
 <TABLE CELLPADDING=3 WIDTH="95%">
 <TR>
-<TD ALIGN=LEFT><B><CODE>lookup-key </B>((&amp;method hash-table) next-method-context store key &amp;key test (default nil))</code></TD>
+<TD ALIGN=LEFT><B><CODE>lookup-key ((store hash-table) key &amp;key test (default nil))</code></B></TD>
 <TD ALIGN=RIGHT><I>[method]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>[No documentation found]</TD>
+<TD COLSPAN=2><i>[No documentation found]</i></TD>
 </TR>
 </TABLE>
 </TD></TR>
@@ -122,28 +134,28 @@
 
 <TABLE CELLPADDING=3 WIDTH="100%">
 <TR>
-<TD ALIGN=LEFT><B><code><font size=+1>make-store </font></B>(style &amp;rest other-args)</code></TD>
+<TD ALIGN=LEFT><B><code><font size=+1>make-store </font>(style &amp;rest other-args)</code></B></TD>
 <TD ALIGN=RIGHT><I>[Generic function]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>Returns a store of the given style, where style is one
+<TD COLSPAN=2><div style='white-space: normal;'>Returns a store of the given style, where style is one
     of :ALIST or :HASHTABLE or any other style with a method defined.
-    It's not essential that you use this, it's just for convenience and consistency.</TD>
+    It's not essential that you use this, it's just for convenience and consistency.</div></TD>
 </TR><TR><TD COLSPAN=2 ALIGN=RIGHT>
 <TABLE CELLPADDING=3 WIDTH="95%">
 <TR>
-<TD ALIGN=LEFT><B><CODE>make-store </B>((&amp;method (eql hashtable)) next-method-context style &amp;rest other-args)</code></TD>
+<TD ALIGN=LEFT><B><CODE>make-store ((style (:eql :hashtable)) &amp;rest other-args)</code></B></TD>
 <TD ALIGN=RIGHT><I>[method]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>[No documentation found]</TD>
+<TD COLSPAN=2><i>[No documentation found]</i></TD>
 </TR>
 </TABLE>
 
 <TABLE CELLPADDING=3 WIDTH="95%">
 <TR>
-<TD ALIGN=LEFT><B><CODE>make-store </B>((&amp;method (eql alist)) next-method-context style &amp;rest other-args)</code></TD>
+<TD ALIGN=LEFT><B><CODE>make-store ((style (:eql :alist)) &amp;rest other-args)</code></B></TD>
 <TD ALIGN=RIGHT><I>[method]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>[No documentation found]</TD>
+<TD COLSPAN=2><i>[No documentation found]</i></TD>
 </TR>
 </TABLE>
 </TD></TR>
@@ -152,33 +164,33 @@
 
 <TABLE CELLPADDING=3 WIDTH="100%">
 <TR>
-<TD ALIGN=LEFT><B><code><font size=+1>relate </font></B>(store key value &amp;key test)</code></TD>
+<TD ALIGN=LEFT><B><code><font size=+1>relate </font>(store key value &amp;key test)</code></B></TD>
 <TD ALIGN=RIGHT><I>[Generic function]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>Create a key/value association in store.
+<TD COLSPAN=2><div style='white-space: normal;'>Create a key/value association in store.
     If key already exists in store, this adds a new association
     but doesn't remove the old association(s) for that key.
     Returns [possibly modified] store. Second value returned is true if store was actually modified.
     In some stores (like alists) you can specify a test for matching the given key.
     In other stores (like hashtables), test is ignored because it's a property of the data structure itself.
     IMPORTANT NOTE: It's important to do (setf alist (relate alist key value)), because while it may destructively
-    modify alists, there are no guarantees.</TD>
+    modify alists, there are no guarantees.</div></TD>
 </TR><TR><TD COLSPAN=2 ALIGN=RIGHT>
 <TABLE CELLPADDING=3 WIDTH="95%">
 <TR>
-<TD ALIGN=LEFT><B><CODE>relate </B>((&amp;method list) next-method-context store key value &amp;key (test #'equal))</code></TD>
+<TD ALIGN=LEFT><B><CODE>relate ((store list) key value &amp;key (test #'equal))</code></B></TD>
 <TD ALIGN=RIGHT><I>[method]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>[No documentation found]</TD>
+<TD COLSPAN=2><i>[No documentation found]</i></TD>
 </TR>
 </TABLE>
 
 <TABLE CELLPADDING=3 WIDTH="95%">
 <TR>
-<TD ALIGN=LEFT><B><CODE>relate </B>((&amp;method hash-table) next-method-context store key value &amp;key (test #'equal))</code></TD>
+<TD ALIGN=LEFT><B><CODE>relate ((store hash-table) key value &amp;key (test #'equal))</code></B></TD>
 <TD ALIGN=RIGHT><I>[method]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>[No documentation found]</TD>
+<TD COLSPAN=2><i>[No documentation found]</i></TD>
 </TR>
 </TABLE>
 </TD></TR>
@@ -187,28 +199,28 @@
 
 <TABLE CELLPADDING=3 WIDTH="100%">
 <TR>
-<TD ALIGN=LEFT><B><code><font size=+1>relate-unique </font></B>(store key value &amp;key test)</code></TD>
+<TD ALIGN=LEFT><B><code><font size=+1>relate-unique </font>(store key value &amp;key test)</code></B></TD>
 <TD ALIGN=RIGHT><I>[Generic function]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>Create a key/value association in store.
+<TD COLSPAN=2><div style='white-space: normal;'>Create a key/value association in store.
     If key already exists in store, this replaces that association.
-    Returns [always-modified] store. No second value.</TD>
+    Returns [always-modified] store. No second value.</div></TD>
 </TR><TR><TD COLSPAN=2 ALIGN=RIGHT>
 <TABLE CELLPADDING=3 WIDTH="95%">
 <TR>
-<TD ALIGN=LEFT><B><CODE>relate-unique </B>((&amp;method list) next-method-context store key value &amp;key (test #'equal))</code></TD>
+<TD ALIGN=LEFT><B><CODE>relate-unique ((store list) key value &amp;key (test #'equal))</code></B></TD>
 <TD ALIGN=RIGHT><I>[method]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>May destructively modify store. But you should still use (setf store (relate-unique store key value)).</TD>
+<TD COLSPAN=2><div style='white-space: normal;'>May destructively modify store. But you should still use (setf store (relate-unique store key value)).</div></TD>
 </TR>
 </TABLE>
 
 <TABLE CELLPADDING=3 WIDTH="95%">
 <TR>
-<TD ALIGN=LEFT><B><CODE>relate-unique </B>((&amp;method hash-table) next-method-context store key value &amp;key test)</code></TD>
+<TD ALIGN=LEFT><B><CODE>relate-unique ((store hash-table) key value &amp;key test)</code></B></TD>
 <TD ALIGN=RIGHT><I>[method]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>[No documentation found]</TD>
+<TD COLSPAN=2><i>[No documentation found]</i></TD>
 </TR>
 </TABLE>
 </TD></TR>
@@ -217,30 +229,30 @@
 
 <TABLE CELLPADDING=3 WIDTH="100%">
 <TR>
-<TD ALIGN=LEFT><B><code><font size=+1>remove-key </font></B>(store key &amp;key test)</code></TD>
+<TD ALIGN=LEFT><B><code><font size=+1>remove-key </font>(store key &amp;key test)</code></B></TD>
 <TD ALIGN=RIGHT><I>[Generic function]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>Removes key and any value(s) associated
+<TD COLSPAN=2><div style='white-space: normal;'>Removes key and any value(s) associated
     with it from store. Returns [possibly modified] store. Second value returned is true
     if store was actually modified.
     In some stores (like alists) you can specify a test for matching the given key.
-    In other stores (like hashtables), test is ignored because it's a property of the data structure itself.</TD>
+    In other stores (like hashtables), test is ignored because it's a property of the data structure itself.</div></TD>
 </TR><TR><TD COLSPAN=2 ALIGN=RIGHT>
 <TABLE CELLPADDING=3 WIDTH="95%">
 <TR>
-<TD ALIGN=LEFT><B><CODE>remove-key </B>((&amp;method list) next-method-context store key &amp;key (test #'equal))</code></TD>
+<TD ALIGN=LEFT><B><CODE>remove-key ((store list) key &amp;key (test #'equal))</code></B></TD>
 <TD ALIGN=RIGHT><I>[method]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>[No documentation found]</TD>
+<TD COLSPAN=2><i>[No documentation found]</i></TD>
 </TR>
 </TABLE>
 
 <TABLE CELLPADDING=3 WIDTH="95%">
 <TR>
-<TD ALIGN=LEFT><B><CODE>remove-key </B>((&amp;method hash-table) next-method-context store key &amp;key test)</code></TD>
+<TD ALIGN=LEFT><B><CODE>remove-key ((store hash-table) key &amp;key test)</code></B></TD>
 <TD ALIGN=RIGHT><I>[method]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>[No documentation found]</TD>
+<TD COLSPAN=2><i>[No documentation found]</i></TD>
 </TR>
 </TABLE>
 </TD></TR>
@@ -249,43 +261,48 @@
 
 <TABLE CELLPADDING=3 WIDTH="100%">
 <TR>
-<TD ALIGN=LEFT><B><code><font size=+1>tally </font></B>(store key amount &amp;key test)</code></TD>
+<TD ALIGN=LEFT><B><code><font size=+1>tally </font>(store key amount &amp;key test)</code></B></TD>
 <TD ALIGN=RIGHT><I>[Generic function]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>Increments the value in the key/value pair in the given data-structure by the indicated amount.
+<TD COLSPAN=2><div style='white-space: normal;'>Increments the value in the key/value pair in the given data-structure by the indicated amount.
    [Expects only one value is associated with key in store.]
    In some stores (like alists) you can specify a test for matching the given key.
    In other stores (like hashtables), test is ignored because it's a property of the data structure itself.
-   Returns 2 values: New store and new total.</TD>
+   Returns 2 values: New store and new total.</div></TD>
 </TR><TR><TD COLSPAN=2 ALIGN=RIGHT>
 <TABLE CELLPADDING=3 WIDTH="95%">
 <TR>
-<TD ALIGN=LEFT><B><CODE>tally </B>((&amp;method list) next-method-context store key amount &amp;key (test #'equal))</code></TD>
+<TD ALIGN=LEFT><B><CODE>tally ((store list) key amount &amp;key (test #'equal))</code></B></TD>
 <TD ALIGN=RIGHT><I>[method]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>Increments the key . value pair in alist indicated by key, by the indicated amount.
-  If such a pair doesn't exist, create it.</TD>
+<TD COLSPAN=2><div style='white-space: normal;'>Increments the key . value pair in alist indicated by key, by the indicated amount.
+  If such a pair doesn't exist, create it.</div></TD>
 </TR>
 </TABLE>
 
 <TABLE CELLPADDING=3 WIDTH="95%">
 <TR>
-<TD ALIGN=LEFT><B><CODE>tally </B>((&amp;method hash-table) next-method-context store key amount &amp;key test)</code></TD>
+<TD ALIGN=LEFT><B><CODE>tally ((store hash-table) key amount &amp;key test)</code></B></TD>
 <TD ALIGN=RIGHT><I>[method]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>Increments the key . value pair in hashtable indicated by key, by the indicated amount.
-  If such a pair doesn't exist, create it.</TD>
+<TD COLSPAN=2><div style='white-space: normal;'>Increments the key . value pair in hashtable indicated by key, by the indicated amount.
+  If such a pair doesn't exist, create it.</div></TD>
 </TR>
 </TABLE>
 
 <TABLE CELLPADDING=3 WIDTH="95%">
 <TR>
-<TD ALIGN=LEFT><B><CODE>tally </B>:before (&amp;method next-method-context store key amount &amp;key test)</code></TD>
+<TD ALIGN=LEFT><B><CODE>tally :before (store key amount &amp;key test)</code></B></TD>
 <TD ALIGN=RIGHT><I>[method]</I></TD></TR>
 <TR>
-<TD COLSPAN=2>[No documentation found]</TD>
+<TD COLSPAN=2><i>[No documentation found]</i></TD>
 </TR>
 </TABLE>
 </TD></TR>
 </TABLE>
 <BR/>
+<hr>
+<h3 style="color:red;">Internal Symbols</h3>
+</div>
+  </body>
+  </html>
